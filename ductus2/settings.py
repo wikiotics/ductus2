@@ -1,5 +1,9 @@
 # Django settings for ductus2 project.
 
+import os
+DUCTUS2_SITE_ROOT = os.path.dirname(__file__)
+del os
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -80,6 +84,12 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'remote_finder.RemoteFinder',
+)
+
+REMOTE_FINDER_CACHE_DIR = DUCTUS2_SITE_ROOT + '/staticfiles_cache'
+REMOTE_FINDER_RESOURCES = (
+    ('jquery.min.js', 'http://code.jquery.com/jquery-1.10.1.min.js', 'sha1:161b78ec52f28657a835e4a5423f03782fd35806'),
 )
 
 # Make this unique, and don't share it with anybody.
