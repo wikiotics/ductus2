@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     'south',
     'django_extensions',
     'debug_toolbar',
+    'ductus2',
 )
 
 # A sample logging configuration. The only tangible logging
