@@ -169,4 +169,15 @@ LOGGING = {
     }
 }
 
-from ductus2_local_settings import *
+try:
+    from ductus2_local_settings import *
+except ImportError as e:
+    raise RuntimeError("""
+
+    Failed to import ductus2_local_settings.py.
+
+    Please make sure such a file is in your PYTHONPATH and is importable.  (If
+    you are viewing this exception as part of a traceback, the exact reason for
+    the failed import is likely available above.)  See README.rst for
+    additional details.
+    """) from e
