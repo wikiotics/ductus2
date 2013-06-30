@@ -138,6 +138,8 @@ INSTALLED_APPS = (
     'django_extensions',
     'debug_toolbar',
     'ductus2',
+    'ductus2.wiki',
+    'ductus2.textpages',
 )
 
 # A sample logging configuration. The only tangible logging
