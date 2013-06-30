@@ -42,4 +42,4 @@ Run the development server::
 
     $ ./manage.py runserver
 
-If everything worked, pointing your browser at `http://localhost:8000/<http://localhost:8000/>`_ should show you the ductus landing page.
+If everything worked, pointing your browser at http://localhost:8000/ should show you the ductus landing page.
