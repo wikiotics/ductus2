@@ -15,6 +15,7 @@ The longer story
 We build a wiki-style system for podcasts which will be very similar to the ones we currently have on ductus. Podcasts will be the first type of lessons to go into the wiki, but obviously the aim is to make it possible to create more lesson types down the road (and this must be fairly easy to do).
 
 A podcast will be used as a language lesson (but could be about anything else, in fact) and feature:
+
   * a title and/or description of its content (free text)
   * tags describing which language it is teaching, using which other language.
   * a series of phrases in text form and an associated audio recording. Let's call each of them a line. Each line has a speaker defined by their name (mainly so the text representation makes sense to the reader), and a language tag.
@@ -29,6 +30,7 @@ Urls
 ____
 
 They are hashes, both for revisions and lessons.
+
   * lesson: wikiotics.org/wiki/aabbccddee
   * revision: wikiotics.org/revs/abcdefabdc
 
