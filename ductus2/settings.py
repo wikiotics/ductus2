@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'ductus2',
     'ductus2.wiki',
     'ductus2.textpages',
+    'ductus2.podcasts',
 )
 
 # A sample logging configuration. The only tangible logging
