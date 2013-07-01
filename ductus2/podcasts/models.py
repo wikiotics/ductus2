@@ -30,8 +30,8 @@ class PodcastPage(models.Model):
     def __unicode__(self):
         return 'podcast stuff'
 
-    def get_latest_rev(self, rev_class):
-        query = rev_class.objects.filter(page=self).order_by('-timestamp')
+    def get_latest_rev(self):
+        query = PodcastRevision.objects.filter(podcast=self).order_by('-timestamp')
         try:
             return query[0]
         except IndexError:
@@ -54,9 +54,16 @@ class PodcastPage(models.Model):
             # set a random url if none exists
             self.url = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(podcast_page_name_length))
 
-        self.podcastrevision_set.create(timestamp=now)
+        del kwargs['page_type']
+        rev = PodcastRevision(podcast=self, timestamp=now)
+        rev.save(**kwargs)
         return podcast_id
 
+
+class PodcastRow(models.Model):
+    """A row in a podcast, containing text, audio. Order info is held in an intermediate structure."""
+    text = models.CharField(max_length=512)
+    # TODO: add language
 
 class PodcastRevision(models.Model):
 
@@ -68,3 +75,24 @@ class PodcastRevision(models.Model):
 
     title = models.CharField(max_length=512)
     description = models.TextField()
+    rows = models.ManyToManyField(PodcastRow, through='PodcastRowOrder')
+
+    def save(self, *args, **kwargs):
+        for key in kwargs:
+            if key != 'rows':
+                setattr(self, key, kwargs[key])
+        rev = super(PodcastRevision, self).save()
+        try:
+            for rank, row in enumerate(kwargs['rows']):
+                row_obj = PodcastRow(text=row['text'])
+                row_obj.save()
+                self.podcastroworder_set.create(revision=self, order=rank, row=row_obj)
+        except KeyError:
+            pass
+
+class PodcastRowOrder(models.Model):
+    """The intermediate class used to tell a revision in which order are its rows."""
+
+    revision = models.ForeignKey(PodcastRevision)
+    row = models.ForeignKey(PodcastRow)
+    order = models.IntegerField()
