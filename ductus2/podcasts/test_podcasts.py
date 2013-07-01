@@ -49,7 +49,7 @@ class TestPodcast:
             'title': 'a test podcast',
             'description': 'some long text about the content of the podcast',
             'rows': [
-                {'order': 1, 'text': 'the first row'}
+                {'text': 'the first row'}
             ]
         }
         self.create_new_podcast(json_podcast)
@@ -64,15 +64,15 @@ class TestPodcast:
             'title': 'a test podcast',
             'description': 'some long text about the content of the podcast',
             'rows': [
-                {'order': 1, 'text': 'the first row'},
+                {'text': 'the first row'},
             ]
         }
         p = self.create_new_podcast(json_podcast)
         json_podcast['rows'] = [
-                {'order': 1, 'text': 'the first row'},
-                {'order': 2, 'text': 'the second row'},
-                {'order': 3, 'text': 'the third row'},
-                {'order': 4, 'text': 'the fourth row'},
+                {'text': 'the first row'},
+                {'text': 'the second row'},
+                {'text': 'the third row'},
+                {'text': 'the fourth row'},
             ]
         p.save(**json_podcast)
         assert PodcastPage.objects.count() == 1
