@@ -4,3 +4,4 @@ django-extensions
 git+https://github.com/elvard/django-debug-toolbar.git#egg=django-debug-toolbar
 django-remote-finder
 psycopg2
+pytest-django
