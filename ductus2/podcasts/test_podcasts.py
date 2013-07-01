@@ -57,3 +57,26 @@ class TestPodcast:
         assert PodcastRevision.objects.count() == 1
         assert PodcastRowOrder.objects.count() == 1
         assert PodcastRow.objects.count() == 1
+
+    def test_create_podcast_with_multiple_text_rows(self):
+        json_podcast = {
+            'page_type': 'podcast',
+            'title': 'a test podcast',
+            'description': 'some long text about the content of the podcast',
+            'rows': [
+                {'order': 1, 'text': 'the first row'},
+            ]
+        }
+        p = self.create_new_podcast(json_podcast)
+        json_podcast['rows'] = [
+                {'order': 1, 'text': 'the first row'},
+                {'order': 2, 'text': 'the second row'},
+                {'order': 3, 'text': 'the third row'},
+                {'order': 4, 'text': 'the fourth row'},
+            ]
+        p.save(**json_podcast)
+        assert PodcastPage.objects.count() == 1
+        assert PodcastRevision.objects.count() == 2
+        assert PodcastRowOrder.objects.count() == 5
+        assert PodcastRow.objects.count() == 5  # FIXME: we should get 4 here, not 5, if we reuse existing rows...
+
