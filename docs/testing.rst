@@ -1,7 +1,7 @@
 Testing ductus2
 ===============
 
-Python unit tests use python-django.
+Python unit tests use pytest-django.
 
 Under ``ductus2`` folder run::
 
