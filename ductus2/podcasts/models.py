@@ -27,7 +27,7 @@ class PodcastPage(models.Model):
 
     url = models.CharField(max_length=podcast_page_name_length)
 
-    def __unicode__(self):
+    def __str__(self):
         return 'podcast stuff'
 
     def get_latest_rev(self):

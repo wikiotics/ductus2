@@ -25,7 +25,7 @@ class TextPage(WikiPage):
     class Meta:
         proxy = True
 
-    def __unicode__(self):
+    def __str__(self):
         return u'this is a text page'
 
     def get_latest_rev(self):
@@ -43,5 +43,5 @@ class TextPageRevision(WikiPageRevision):
     title = models.CharField(max_length=512)
     text = models.TextField()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
