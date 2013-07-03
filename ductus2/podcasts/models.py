@@ -1,5 +1,6 @@
 import random
 import string
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
@@ -14,18 +15,18 @@ class PodcastPage(models.Model):
      {
       page_type: 'podcast',
       url: '<url>',   // 16 chars, empty if podcast not yet saved
-      rev_urn: '<urn>',        // 16 chars, empty if podcast not yet saved, will be ignored when saving, we always create a new rev if there are changes
       timestamp: '<revision_timestamp>',   // not set if podcast not yet saved (see line above)
       title: '<512 chars max>',    // mandatory
       description: '<text>',       // can be empty string
-      rows: [
-        { ... },    // TODO: to be defined
-      ]
+      rows: ''                  // a string of text for now
      }
+
+    The rows attribute should be valid JSON (for future use) formatted like:
+    [
+        {"text": "the text in the row", "audio": "some ID for the audio file"},
+        ...
+    ]
     """
-
-
-    #url = models.CharField(max_length=podcast_page_name_length)
 
     def __str__(self):
         return self.get_latest_rev().title
@@ -40,66 +41,22 @@ class PodcastPage(models.Model):
     def save(self, *args, **kwargs):
         """When saving a podcatpage, create a new revision and make the page point to it"""
         podcast_id = super(PodcastPage, self).save()    # give new pages an id for create below to work
-        now = timezone.now()
-
-        #try:    # FIXME: put this in validator
-        #    title = kwargs['title']
-        #except KeyError:
-        #    raise Exception('Title required for Podcast lessons')
-
-        #try:
-        #    self.url = kwargs['url']
-            #TODO: check for changes before saving a rev
-        #except KeyError:
-            # set a random url if none exists
-        #    self.url = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(podcast_page_name_length))
-
-        #del kwargs['page_type']
-        rev = PodcastRevision(podcast=self, timestamp=now)
+        rev = PodcastRevision(podcast=self, timestamp=timezone.now())
         rev.save(**kwargs)
         return podcast_id
 
 
-class PodcastRow(models.Model):
-    """A row in a podcast, containing text, audio. Order info is held in an intermediate structure."""
-    text = models.CharField(max_length=512)
-    # TODO: add language
-
-    def __str__(self):
-        return self.text
-
 class PodcastRevision(models.Model):
+    """Each revision is saved here. Each modification of the content leads to a new revision."""
 
-    #urn = models.CharField(max_length=podcast_revision_name_length)
     podcast = models.ForeignKey(PodcastPage)
-    #author = models.ForeignKey(User)
+    author = models.ForeignKey(User, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     author_ip = models.GenericIPAddressField(blank=True, null=True)
 
     title = models.CharField(max_length=512)
     description = models.TextField()
-    rows = models.ManyToManyField(PodcastRow, through='PodcastRowOrder')
+    rows = models.TextField()   # for now, store the content as a raw JSON string
 
     def __str__(self):
         return self.title
-
-    def save(self, *args, **kwargs):
-        for key in kwargs:
-            if key != 'rows':
-                setattr(self, key, kwargs[key])
-        rev = super(PodcastRevision, self).save()
-        try:
-            for rank, row in enumerate(kwargs['rows']):
-                # FIXME: we need to reuse podcast rows when they exist, and not duplicate them upon each save
-                row_obj = PodcastRow(text=row['text'])
-                row_obj.save()
-                self.podcastroworder_set.create(revision=self, order=rank, row=row_obj)
-        except KeyError:
-            pass
-
-class PodcastRowOrder(models.Model):
-    """The intermediate class used to tell a revision in which order are its rows."""
-
-    revision = models.ForeignKey(PodcastRevision)
-    row = models.ForeignKey(PodcastRow)
-    order = models.IntegerField()
