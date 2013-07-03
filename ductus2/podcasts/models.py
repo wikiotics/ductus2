@@ -25,7 +25,7 @@ class PodcastPage(models.Model):
     """
 
 
-    url = models.CharField(max_length=podcast_page_name_length)
+    #url = models.CharField(max_length=podcast_page_name_length)
 
     def __str__(self):
         return 'podcast stuff'
@@ -42,19 +42,19 @@ class PodcastPage(models.Model):
         podcast_id = super(PodcastPage, self).save()    # give new pages an id for create below to work
         now = timezone.now()
 
-        try:    # FIXME: put this in validator
-            title = kwargs['title']
-        except KeyError:
-            raise Exception('Title required for Podcast lessons')
+        #try:    # FIXME: put this in validator
+        #    title = kwargs['title']
+        #except KeyError:
+        #    raise Exception('Title required for Podcast lessons')
 
-        try:
-            self.url = kwargs['url']
+        #try:
+        #    self.url = kwargs['url']
             #TODO: check for changes before saving a rev
-        except KeyError:
+        #except KeyError:
             # set a random url if none exists
-            self.url = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(podcast_page_name_length))
+        #    self.url = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(podcast_page_name_length))
 
-        del kwargs['page_type']
+        #del kwargs['page_type']
         rev = PodcastRevision(podcast=self, timestamp=now)
         rev.save(**kwargs)
         return podcast_id
@@ -67,7 +67,7 @@ class PodcastRow(models.Model):
 
 class PodcastRevision(models.Model):
 
-    urn = models.CharField(max_length=podcast_revision_name_length)
+    #urn = models.CharField(max_length=podcast_revision_name_length)
     podcast = models.ForeignKey(PodcastPage)
     #author = models.ForeignKey(User)
     timestamp = models.DateTimeField(auto_now_add=True)
