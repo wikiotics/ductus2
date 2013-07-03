@@ -88,7 +88,11 @@ STATICFILES_FINDERS = (
 
 REMOTE_FINDER_CACHE_DIR = DUCTUS2_SITE_ROOT + '/staticfiles_cache'
 REMOTE_FINDER_RESOURCES = (
+    ('json2.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js', 'sha1:7efa419b24d7c00f492fa1476da624a0ed06e1d4'),
     ('jquery.min.js', 'http://code.jquery.com/jquery-1.10.1.min.js', 'sha1:161b78ec52f28657a835e4a5423f03782fd35806'),
+    ('underscore.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js', 'sha1:048c69640ac8f0a3add4f2fd219a2fcb12a27d73'),
+    ('backbone.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js', 'sha1:89218fd4c321457a82aac6e4d3b5a50088745155'),
+    ('backbone.marionette.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/1.0.1-bundled/backbone.marionette.min.js', 'sha1:49d12640a1e837994705e9bc92bc48648b181be9'),
 )
 
 # Make this unique, and don't share it with anybody.
@@ -102,7 +106,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -131,17 +135,23 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'south',
     'django_extensions',
-    'debug_toolbar',
+    #'debug_toolbar',
     'ductus2',
     'ductus2.wiki',
     'ductus2.textpages',
     'ductus2.podcasts',
+    'rest_framework',
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGINATE_BY': 10
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
