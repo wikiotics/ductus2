@@ -28,7 +28,7 @@ class PodcastPage(models.Model):
     #url = models.CharField(max_length=podcast_page_name_length)
 
     def __str__(self):
-        return 'podcast stuff'
+        return self.get_latest_rev().title
 
     def get_latest_rev(self):
         query = PodcastRevision.objects.filter(podcast=self).order_by('-timestamp')
@@ -65,6 +65,9 @@ class PodcastRow(models.Model):
     text = models.CharField(max_length=512)
     # TODO: add language
 
+    def __str__(self):
+        return self.text
+
 class PodcastRevision(models.Model):
 
     #urn = models.CharField(max_length=podcast_revision_name_length)
@@ -77,6 +80,9 @@ class PodcastRevision(models.Model):
     description = models.TextField()
     rows = models.ManyToManyField(PodcastRow, through='PodcastRowOrder')
 
+    def __str__(self):
+        return self.title
+
     def save(self, *args, **kwargs):
         for key in kwargs:
             if key != 'rows':
@@ -84,6 +90,7 @@ class PodcastRevision(models.Model):
         rev = super(PodcastRevision, self).save()
         try:
             for rank, row in enumerate(kwargs['rows']):
+                # FIXME: we need to reuse podcast rows when they exist, and not duplicate them upon each save
                 row_obj = PodcastRow(text=row['text'])
                 row_obj.save()
                 self.podcastroworder_set.create(revision=self, order=rank, row=row_obj)
