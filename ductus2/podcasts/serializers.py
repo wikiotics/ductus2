@@ -1,11 +1,6 @@
 from ductus2.podcasts.models import PodcastPage, PodcastRevision, PodcastRow, PodcastRowOrder
 from rest_framework import serializers
 
-class PodcastPageSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = PodcastPage
-        fields = ()
-
 class PodcastRowOrderSerializer(serializers.HyperlinkedModelSerializer):
 
     id = serializers.Field(source='row.id')
@@ -25,4 +20,11 @@ class PodcastRowSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = PodcastRow
         fields = ('text')
+
+class PodcastPageSerializer(serializers.HyperlinkedModelSerializer):
+
+    revisions = PodcastRevisionSerializer(source='podcastrevision_set', many=True)
+    class Meta:
+        model = PodcastPage
+        fields = ()
 
