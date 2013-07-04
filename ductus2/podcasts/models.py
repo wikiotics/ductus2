@@ -29,9 +29,9 @@ class PodcastPage(models.Model):
     """
 
     def __str__(self):
-        return self.get_latest_rev().title
+        return self.get_latest_revision().title
 
-    def get_latest_rev(self):
+    def get_latest_revision(self):
         query = PodcastRevision.objects.filter(podcast=self).order_by('-timestamp')
         try:
             return query[0]
