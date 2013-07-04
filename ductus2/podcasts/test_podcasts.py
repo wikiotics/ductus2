@@ -99,6 +99,7 @@ class TestPodcast:
             ]
         }
         response = admin_client.post('/api/podcasts/', json_podcast)
+        print(response.content)
         assert response.status_code == 201
         podcast_id = response.data["id"]
         assert PodcastPage.objects.count() == 1
