@@ -15,6 +15,20 @@ class PodcastLatestRevisionSerializer(serializers.HyperlinkedModelSerializer):
         model = PodcastRevision
         fields = ('id', 'timestamp', 'podcast', 'author_ip', 'title', 'description', 'rows')
 
+class PodcastListSerializer(serializers.ModelSerializer):
+    """List all podcasts, with limited info"""
+
+    content = serializers.SerializerMethodField('get_latest_revision')
+
+    class Meta:
+        model = PodcastPage
+        fields = ()
+
+    def get_latest_revision(self, obj):
+        rev = obj.get_latest_revision()
+        serializer = PodcastRevisionSerializer(rev)
+        return serializer.data
+
 class PodcastPageSerializer(serializers.ModelSerializer):
     """The default serializer, used for saving podcasts"""
 

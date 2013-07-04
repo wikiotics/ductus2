@@ -2,7 +2,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from ductus2.podcasts.models import PodcastPage, PodcastRevision
 from rest_framework import viewsets, response
-from ductus2.podcasts.serializers import PodcastPageSerializer, PodcastRevisionSerializer, PodcastPageDetailSerializer, PodcastPageHistorySerializer
+from ductus2.podcasts.serializers import PodcastPageSerializer, PodcastRevisionSerializer, PodcastPageDetailSerializer, PodcastPageHistorySerializer, PodcastListSerializer
 
 class PodcastPageViewSet(viewsets.ModelViewSet):
     """
@@ -10,6 +10,13 @@ class PodcastPageViewSet(viewsets.ModelViewSet):
     """
     queryset = PodcastPage.objects.all()
     serializer_class = PodcastPageSerializer
+
+    def list(self, request):
+        """ GET /api/podcast/ lists limited info for the latest revision of all podcasts.
+        """
+        queryset = PodcastPage.objects.all()
+        serializer = PodcastListSerializer(queryset)
+        return response.Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         """ GET /api/podcasts/<id>/ returns all fields in the podcast, for the latest revision.
