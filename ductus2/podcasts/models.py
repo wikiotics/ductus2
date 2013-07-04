@@ -51,7 +51,7 @@ class PodcastPage(models.Model):
 class PodcastRevision(models.Model):
     """Each revision is saved here. Each modification of the content leads to a new revision."""
 
-    podcast = models.ForeignKey(PodcastPage)
+    podcast = models.ForeignKey(PodcastPage, related_name='revisions')
     author = models.ForeignKey(User, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     author_ip = models.GenericIPAddressField(blank=True, null=True)
