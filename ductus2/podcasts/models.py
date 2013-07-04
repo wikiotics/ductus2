@@ -39,10 +39,12 @@ class PodcastPage(models.Model):
             return None
 
     def save(self, *args, **kwargs):
-        """When saving a podcatpage, create a new revision and make the page point to it"""
+        """When saving a podcast page, create a new revision and make the page point to it"""
         podcast_id = super(PodcastPage, self).save()    # give new pages an id for create below to work
         rev = PodcastRevision(podcast=self, timestamp=timezone.now())
-        rev.save(**kwargs)
+        for key in kwargs:
+            setattr(rev, key, kwargs[key])
+        rev.save()
         return podcast_id
 
 
