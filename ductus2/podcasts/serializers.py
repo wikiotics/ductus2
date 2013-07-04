@@ -7,7 +7,7 @@ class PodcastRevisionSerializer(serializers.HyperlinkedModelSerializer):
         model = PodcastRevision
         fields = ('id', 'timestamp', 'podcast', 'author_ip', 'title', 'description', 'rows')
 
-class PodcastPageSerializer(serializers.HyperlinkedModelSerializer):
+class PodcastPageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PodcastPage
