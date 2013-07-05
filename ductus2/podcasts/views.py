@@ -1,8 +1,17 @@
 from django.http import Http404
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render_to_response
 from ductus2.podcasts.models import PodcastPage, PodcastRevision
 from rest_framework import viewsets, response
 from ductus2.podcasts.serializers import PodcastPageSerializer, PodcastRevisionSerializer, PodcastPageDetailSerializer, PodcastPageHistorySerializer, PodcastListSerializer
+
+def start(request):
+    """the base page under /wiki/, loads the javascript machinery which then interacts with the api."""
+
+    return render_to_response('podcasts/base.html', {})
+
+#
+# API views
+#
 
 class PodcastPageViewSet(viewsets.ModelViewSet):
     """
