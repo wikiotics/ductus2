@@ -97,6 +97,19 @@
 
   <div class="body-content">
 
+  <!-- templates for use by backbone -->
+  <script type="text/html" id="podcast-list-view">
+  <ul id="podcast-list"></ul>
+  </script>
+
+  <script type="text/html" id="podcast-item-view">
+  <div>
+    <span><%= content.title %></span>
+    <span><%= content.timestamp %></span>
+    <a href="/wiki/podcasts/<%= id %>">Podcast</a>
+  </div>
+  </script>
+
     <div class="row">
       <div class="col col-lg-4">
         <h2>Podcast list</h2>
@@ -125,6 +138,17 @@
     <script src="{% static "backbone.min.js" %}"></script>
     <script src="{% static "backbone.marionette.min.js" %}"></script>
 
+    <!-- Ductus app -->
+    <script src="{% static "js/main.js" %}"></script>
+    <script src="{% static "js/podcasts.models.js" %}"></script>
+    <script src="{% static "js/podcasts.views.js" %}"></script>
+    <script src="{% static "js/podcasts.module.js" %}"></script>
+    <script>
+    // this is where it all starts
+    $(function(){
+        d2_app.start();
+    });
+    </script>
     <!-- Analytics -->
 
   </body>
